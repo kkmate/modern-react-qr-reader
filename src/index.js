@@ -231,35 +231,22 @@ module.exports = class Reader extends Component {
     let height = Math.floor(legacyMode ? img.naturalHeight : preview.videoHeight)
 
     // Canvas draw offsets
-    let hozOffset = 0
-    let vertOffset = 0
+    var hozOffset = 0
+    var vertOffset = 0
 
-    // Scale image to correct resolution
-    if(legacyMode){
-      // Keep image aspect ratio
-      const greatestSize = width > height ? width : height
-      const ratio = resolution / greatestSize
+    
+        // Crop image to fit 1:1 aspect ratio
+        var smallestSize = width < height ? width : height;
+        var _ratio = resolution / smallestSize;
 
-      height = ratio * height
-      width = ratio * width
+        height = _ratio * height;
+        width = _ratio * width;
 
-      canvas.width = width
-      canvas.height = height
-    }else{
-      // Crop image to fit 1:1 aspect ratio
-      const smallestSize = width < height ? width : height
-      const ratio = resolution / smallestSize
+        vertOffset = (height - resolution) / 2 * -1;
+        hozOffset = (width - resolution) / 2 * -1;
 
-      height = ratio * height
-      width = ratio * width
-
-      vertOffset = (height - resolution) / 2 * -1
-      hozOffset = (width - resolution) / 2 * -1
-
-      canvas.width = resolution
-      canvas.height = resolution
-    }
-
+        canvas.width = resolution;
+        canvas.height = resolution;
 
     const previewIsPlaying = preview &&
       preview.readyState === preview.HAVE_ENOUGH_DATA
