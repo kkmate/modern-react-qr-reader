@@ -4,7 +4,10 @@ self.addEventListener('message', function(e) {
   var decoded = jsQR(
     e.data.data,
     e.data.width,
-    e.data.height
+    e.data.height,
+    {
+  inversionAttempts: "attemptBoth",
+}
   )
   if (decoded) {
     postMessage(decoded.data)
